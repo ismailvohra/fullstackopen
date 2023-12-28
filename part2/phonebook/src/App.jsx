@@ -6,6 +6,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [notifyMessage, setNotifyMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((response) => {
@@ -67,13 +68,21 @@ const App = () => {
     personsService.create(nameObject).then(response => {
     setPersons(persons.concat(response.data));
     setNewName("");
-    setNewNumber(""); }) 
+    setNewNumber(""); 
+  
+    setNotifyMessage(`Added ${nameObject.name}`)
+    setTimeout(()=> {
+      setNotifyMessage(null)
+    },5000)
+  
+    })
     
     
   };
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notifyMessage} />
       <Filter value={searchQuery} onChange={handleSearch} />
       <h3>Add a new</h3>
       <PersonForm
@@ -137,5 +146,17 @@ const Persons = (props) => {
     </>
   );
 };
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='notification'>
+      {message}
+    </div>
+  )
+}
 
 export default App;
