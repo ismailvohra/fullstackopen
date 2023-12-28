@@ -50,20 +50,24 @@ const App = () => {
           return (persons.find(element => element.name === newName))
         }
         nameObject.id = refId().id
-        personsService.update(refId().id, nameObject).then(response => {
+        personsService.update(refId().id, nameObject)
+        .then(response => {
           setPersons(persons.map(element => element.name !== newName ? element : nameObject))
           
+          setNotifyMessage(`Information of ${newName} has been updated`)
+          setTimeout(()=> {
+            setNotifyMessage(null)
+          },5000)
+        })
+        .catch(error => {
+          setNotifyMessage(`Information of ${newName} has already been removed from the server`)
+          setTimeout(()=> {
+            setNotifyMessage(null)
+          },5000)
         })
       }
     return 
     }
-    {/*
-    if (persons.some((e) => e.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
-
-      return;
-    }
-    */}
     
     personsService.create(nameObject).then(response => {
     setPersons(persons.concat(response.data));
