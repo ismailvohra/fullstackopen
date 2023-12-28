@@ -43,16 +43,32 @@ const App = () => {
       number: newNumber
     };
 
+    if (persons.some((e) => e.name === newName)){
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new number?`)===true){
+        const refId = () => {
+          return (persons.find(element => element.name === newName))
+        }
+        nameObject.id = refId().id
+        personsService.update(refId().id, nameObject).then(response => {
+          setPersons(persons.map(element => element.name !== newName ? element : nameObject))
+          
+        })
+      }
+    return 
+    }
+    {/*
     if (persons.some((e) => e.name === newName)) {
       alert(`${newName} is already added to phonebook`);
 
       return;
     }
-
+    */}
+    
     personsService.create(nameObject).then(response => {
     setPersons(persons.concat(response.data));
     setNewName("");
     setNewNumber(""); }) 
+    
     
   };
   return (
