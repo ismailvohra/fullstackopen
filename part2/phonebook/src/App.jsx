@@ -40,8 +40,7 @@ const App = () => {
 
     const nameObject = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1,
+      number: newNumber
     };
 
     if (persons.some((e) => e.name === newName)) {
@@ -50,9 +49,11 @@ const App = () => {
       return;
     }
 
-    setPersons(persons.concat(nameObject));
+    axios.post("http://localhost:3001/persons", nameObject).then(response => {
+    setPersons(persons.concat(response.data));
     setNewName("");
-    setNewNumber("");
+    setNewNumber(""); }) 
+    
   };
   return (
     <div>
