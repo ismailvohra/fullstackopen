@@ -68,7 +68,7 @@ const App = () => {
         handleNewNumber={handleNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons filterFunction={personFilter} />
+      <Persons filterFunction={personFilter} persons={persons} setPersons={setPersons} />
     </div>
   );
 };
@@ -100,11 +100,22 @@ const PersonForm = (props) => {
 };
 
 const Persons = (props) => {
+
+  const handleDelete = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)===true){
+      personsService.del(person.id).then(response => {
+        props.setPersons(props.persons.filter(element => element.id !== person.id))
+
+      })
+    }
+  }
+
   return (
     <>
       {props.filterFunction().map((person) => (
         <p key={person.name}>
           {person.name} {person.number}
+          <button onClick={() => handleDelete(person)}>delete</button>
         </p>
       ))}
     </>
