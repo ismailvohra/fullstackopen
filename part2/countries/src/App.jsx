@@ -30,16 +30,19 @@ const App = () => {
       )
     }
 
+    const showCountry = (selectedCountry) => {
+      setSearchQuery(selectedCountry)
+    }
+
     if (lengthCheck <10 && lengthCheck>1){
       return (
         <ul>
-        {filteredNamesOfCountries.map(element => <li key={element}>{element}</li>)}
+        {filteredNamesOfCountries.map(element => <li key={element}>{element}<button onClick={() => showCountry(element)}>show</button></li>)}
         </ul>
       )
     }
 
     const exactMatch = countries.filter(element => element.name.common.toLowerCase() === filteredNamesOfCountries[0].toLowerCase())[0]
-    console.log(exactMatch)
     return(
       <div>
         <h2>{exactMatch.name.common}</h2>
@@ -47,13 +50,12 @@ const App = () => {
         <p>area {exactMatch.area}</p>
         <h2>languages</h2>
         <ul>
-          {Object.values(exactMatch.languages).map(element => <li>{element}</li>)}
+          {Object.values(exactMatch.languages).map(element => <li key={element}>{element}</li>)}
         </ul>
         <img src={exactMatch.flags.png} alt={exactMatch.flags.alt} />
       </div>
     )
   }
-
 
   const handleSearchQuery = (event) => {
     setSearchQuery(event.target.value)
@@ -61,9 +63,11 @@ const App = () => {
   return (
     <div>
       find countries <input value={searchQuery} onChange={handleSearchQuery} />
+      
       {resultQuery()}
     </div>
   )
 }
+
 
 export default App
