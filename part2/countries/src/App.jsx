@@ -13,6 +13,7 @@ const App = () => {
   const [city, setCity] = useState(null)
 
   useEffect(()=> {
+    console.log("boss")
     axios.get(baseUrl)
     .then(response => {
       setCountries(response.data)
@@ -20,10 +21,12 @@ const App = () => {
   },[])
 
   useEffect(() => {
+   
     if (city) {
       axios
         .get(`${weatherBaseUrl1}${city.lat}${weatherBaseUrl2}${city.lon}${weatherBaseUrl3}`)
         .then((response) => {
+        
           setWeatherResult(response.data);
         })
         .catch((error) => {
@@ -73,6 +76,14 @@ const App = () => {
     }
     console.log(city)
     console.log(weatherResult)
+
+    if(!city){
+      return null
+    }
+
+    if (!weatherResult){
+      return null
+    }
     return(
       <div>
         <h2>{exactMatch.name.common}</h2>
@@ -84,8 +95,8 @@ const App = () => {
         </ul>
         <img src={exactMatch.flags.png} alt={exactMatch.flags.alt} />
         <h2>Weather in {exactMatch.capital[0]}</h2>
-        <p>temperature {weatherResult.current.temperature_2m} Celcius</p>
-        <p>wind {weatherResult.current.wind_speed_10m} km/h</p>
+        <p>temperature {weatherResult?.current?.temperature_2m} Celcius</p>
+        <p>wind {weatherResult?.current?.wind_speed_10m} km/h</p>
       </div>
     )
   }
